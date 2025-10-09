@@ -1,2 +1,190 @@
-<p>welcome works!</p>
-<mat-slide-toggle>Toggle me!</mat-slide-toggle>
+<!-- Navigation -->
+<div class="navigation">
+    <h1>Angular Material Demos</h1>
+    <div class="nav-buttons">
+        <button mat-raised-button color="primary" routerLink="/welcome">
+            <mat-icon>home</mat-icon>
+            Welcome Form
+        </button>
+        <button mat-raised-button color="accent" routerLink="/dates-form">
+            <mat-icon>event</mat-icon>
+            Dates Form
+        </button>
+        <button mat-raised-button color="warn" routerLink="/pagination">
+            <mat-icon>view_list</mat-icon>
+            Pagination Demo
+        </button>
+    </div>
+</div>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="welcome-form">
+    <!-- Text Input -->
+    <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Full Name</mat-label>
+        <input
+            matInput
+            formControlName="fullName"
+            placeholder="e.g. Jane Doe"
+        />
+        <mat-icon matSuffix>person</mat-icon>
+        <mat-error
+            *ngIf="
+                form.controls.fullName.touched &&
+                form.controls.fullName.hasError('required')
+            "
+        >
+            Full name is required
+        </mat-error>
+        <mat-error
+            *ngIf="
+                form.controls.fullName.touched &&
+                form.controls.fullName.hasError('minlength')
+            "
+        >
+            Minimum 2 characters required
+        </mat-error>
+    </mat-form-field>
+
+    <!-- Email Input -->
+    <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Email Address</mat-label>
+        <input
+            matInput
+            type="email"
+            formControlName="email"
+            placeholder="jane@example.com"
+        />
+        <mat-icon matSuffix>email</mat-icon>
+        <mat-error
+            *ngIf="
+                form.controls.email.touched &&
+                form.controls.email.hasError('required')
+            "
+        >
+            Email is required
+        </mat-error>
+        <mat-error
+            *ngIf="
+                form.controls.email.touched &&
+                form.controls.email.hasError('email')
+            "
+        >
+            Enter a valid email address
+        </mat-error>
+    </mat-form-field>
+
+    <!-- Select Dropdown -->
+    <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Favorite Color</mat-label>
+        <mat-select formControlName="favoriteColor">
+            <mat-option *ngFor="let color of colors" [value]="color.value">
+                {{ color.label }}
+            </mat-option>
+        </mat-select>
+        <mat-icon matSuffix>palette</mat-icon>
+        <mat-error
+            *ngIf="
+                form.controls.favoriteColor.touched &&
+                form.controls.favoriteColor.hasError('required')
+            "
+        >
+            Please select your favorite color
+        </mat-error>
+    </mat-form-field>
+
+    <!-- Slider -->
+    <div class="form-field">
+        <label class="form-label"
+            >Experience Level:
+            {{
+                formatExperienceLabel(form.controls.experienceLevel.value)
+            }}</label
+        >
+        <mat-slider
+            discrete
+            min="1"
+            max="10"
+            step="1"
+            class="experience-slider"
+        >
+            <input matSliderThumb formControlName="experienceLevel" />
+        </mat-slider>
+        <div class="slider-labels">
+            <span>Beginner</span>
+            <span>Expert</span>
+        </div>
+    </div>
+
+    <!-- Radio Buttons -->
+    <div class="form-field">
+        <label class="form-label">Preferred Contact Method</label>
+        <mat-radio-group formControlName="preferredContact" class="radio-group">
+            <mat-radio-button
+                *ngFor="let method of contactMethods"
+                [value]="method.value"
+            >
+                {{ method.label }}
+            </mat-radio-button>
+        </mat-radio-group>
+    </div>
+
+    <!-- Toggle Switch -->
+    <div class="form-field">
+        <mat-slide-toggle formControlName="newsletter" color="primary">
+            Subscribe to newsletter for updates and tips
+        </mat-slide-toggle>
+    </div>
+
+    <!-- Chips (Multi-select) -->
+    <div class="form-field">
+        <label class="form-label">Interests</label>
+        <mat-chip-listbox
+            multiple
+            formControlName="interests"
+            aria-label="Select your interests"
+        >
+            <mat-chip-option
+                *ngFor="let interest of availableInterests"
+                [value]="interest"
+            >
+                {{ interest }}
+            </mat-chip-option>
+        </mat-chip-listbox>
+    </div>
+
+    <!-- Date Picker -->
+    <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Birth Year</mat-label>
+        <input
+            matInput
+            [matDatepicker]="yearPicker"
+            formControlName="birthYear"
+        />
+        <mat-datepicker-toggle
+            matIconSuffix
+            [for]="yearPicker"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #yearPicker startView="multi-year"></mat-datepicker>
+        <mat-hint>Optional - Used for age-appropriate content</mat-hint>
+    </mat-form-field>
+
+    <!-- Form Actions -->
+    <div class="form-actions">
+        <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="form.invalid"
+        >
+            <mat-icon>check</mat-icon>
+            Submit Profile
+        </button>
+        <button mat-stroked-button type="button" (click)="form.reset()">
+            <mat-icon>refresh</mat-icon>
+            Reset Form
+        </button>
+    </div>
+    <div>
+        {{ form.value | json }}
+    </div>
+</form>

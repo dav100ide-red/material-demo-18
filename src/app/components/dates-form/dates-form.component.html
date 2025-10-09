@@ -1,0 +1,82 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="dates-form">
+    <h2>Date Selection Form</h2>
+
+    <!-- Single Date Picker -->
+    <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Select a Date</mat-label>
+        <input
+            matInput
+            [matDatepicker]="singleDatePicker"
+            formControlName="selectedDate"
+            placeholder="Choose a date"
+        />
+        <mat-datepicker-toggle
+            matIconSuffix
+            [for]="singleDatePicker"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #singleDatePicker></mat-datepicker>
+        <mat-error
+            *ngIf="
+                form.controls.selectedDate.touched &&
+                form.controls.selectedDate.hasError('required')
+            "
+        >
+            Please select a date
+        </mat-error>
+    </mat-form-field>
+
+    <!-- Date Range Picker -->
+    <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Select Date Range</mat-label>
+        <mat-date-range-input [rangePicker]="rangePicker">
+            <input
+                matStartDate
+                placeholder="Start date"
+                formControlName="startDate"
+            />
+            <input
+                matEndDate
+                placeholder="End date"
+                formControlName="endDate"
+            />
+        </mat-date-range-input>
+        <mat-datepicker-toggle
+            matIconSuffix
+            [for]="rangePicker"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #rangePicker></mat-datepicker>
+        <mat-error
+            *ngIf="
+                (form.controls.startDate.touched ||
+                    form.controls.endDate.touched) &&
+                (form.controls.startDate.hasError('required') ||
+                    form.controls.endDate.hasError('required'))
+            "
+        >
+            Please select both start and end dates
+        </mat-error>
+    </mat-form-field>
+
+    <!-- Form Actions -->
+    <div class="form-actions">
+        <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="form.invalid"
+        >
+            <mat-icon>check</mat-icon>
+            Submit Dates
+        </button>
+        <button mat-stroked-button type="button" (click)="form.reset()">
+            <mat-icon>refresh</mat-icon>
+            Reset Form
+        </button>
+    </div>
+
+    <!-- Debug Output -->
+    <div class="debug-output">
+        <h3>Form Values:</h3>
+        <pre>{{ form.value | json }}</pre>
+    </div>
+</form>
