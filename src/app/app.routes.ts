@@ -11,6 +11,10 @@ export const routes: Routes = [
         loadComponent: () => import('./components/welcome/welcome.component'),
     },
     {
+        path: 'tabs-doc',
+        loadComponent: () => import('./components/tabs-doc/tabs-doc.component'),
+    },
+    {
         path: 'dates-form',
         loadComponent: () =>
             import('./components/dates-form/dates-form.component'),
